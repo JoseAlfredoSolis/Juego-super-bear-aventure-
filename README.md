@@ -4,7 +4,25 @@ Un juego de correr sin fin (endless runner) hecho con HTML5 Canvas y JavaScript 
 sin dependencias. Controla a un oso que corre, salta y se agacha para esquivar
 obstáculos. ¡Cuanto más lejos llegues, más rápido se vuelve!
 
-## Cómo jugar
+## Jugar en la web
+
+El juego se publica automáticamente en **GitHub Pages** mediante GitHub Actions
+(`.github/workflows/deploy.yml`) cada vez que se actualiza la rama `main`.
+
+URL del juego una vez activado:
+
+```
+https://josealfredosolis.github.io/juego-super-bear-aventure-/
+```
+
+### Activar GitHub Pages (una sola vez)
+
+1. En GitHub, ve a **Settings → Pages**.
+2. En **Build and deployment → Source**, elige **GitHub Actions**.
+3. Fusiona este PR (o haz push a `main`). El workflow desplegará el juego y la
+   URL aparecerá en la pestaña **Actions** y en **Settings → Pages**.
+
+## Jugar en local
 
 Abre `index.html` en tu navegador, o sirve la carpeta con un servidor estático:
 
