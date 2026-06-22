@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+SuperBearAdventure/bin/
+SuperBearAdventure/obj/
+
+# MonoGame content pipeline output
+SuperBearAdventure/Content/bin/
+SuperBearAdventure/Content/obj/
+
+# .NET
+*.user
+*.suo
+.vs/
