@@ -1,6 +1,8 @@
 (() => {
   "use strict";
 
+  const E = window.BearEngine;
+
   const canvas = document.getElementById("game");
   const ctx = canvas.getContext("2d");
 
@@ -37,13 +39,9 @@
     ducking: false,
   };
 
-  const GRAVITY = 2200;       // px/s^2
-  const JUMP_VELOCITY = -780; // px/s
-  const MAX_JUMPS = 2;
-
   let obstacles = [];
   let clouds = [];
-  let speed = 320;            // px/s, grows over time
+  let speed = E.CONFIG.BASE_SPEED; // px/s, grows over time
   let distance = 0;           // metres
   let spawnTimer = 0;
   let nextSpawn = 1.1;
@@ -56,7 +54,7 @@
     player.jumps = 0;
     player.ducking = false;
     obstacles = [];
-    speed = 320;
+    speed = E.CONFIG.BASE_SPEED;
     distance = 0;
     spawnTimer = 0;
     nextSpawn = 1.1;
@@ -79,11 +77,7 @@
   // ---- Input ----
   function jump() {
     if (state !== STATE.PLAYING) return;
-    if (player.jumps < MAX_JUMPS) {
-      player.vy = JUMP_VELOCITY;
-      player.onGround = false;
-      player.jumps++;
-    }
+    E.tryJump(player);
   }
 
   function setDuck(on) {
@@ -183,21 +177,12 @@
       return;
     }
 
-    speed += 9 * dt;                       // gradual ramp
-    distance += (speed * dt) / 10;         // 10 px ~= 1 m
+    speed = E.nextSpeed(speed, dt);        // gradual ramp
+    distance += E.distanceGain(speed, dt); // 10 px ~= 1 m
     legPhase += speed * dt * 0.02;
 
     // Player physics
-    player.vy += GRAVITY * dt;
-    player.y += player.vy * dt;
-    if (player.y >= GROUND_Y) {
-      player.y = GROUND_Y;
-      player.vy = 0;
-      player.onGround = true;
-      player.jumps = 0;
-    }
-
-    const curH = player.ducking && player.onGround ? player.h * 0.6 : player.h;
+    E.stepPlayer(player, dt, GROUND_Y);
 
     // Clouds
     for (const c of clouds) {
@@ -214,13 +199,10 @@
     if (spawnTimer >= nextSpawn) {
       spawnTimer = 0;
       spawnObstacle();
-      const base = Math.max(0.55, 1.25 - distance / 1500);
-      nextSpawn = base + Math.random() * 0.7;
+      nextSpawn = E.spawnBaseDelay(distance) + Math.random() * 0.7;
     }
 
     // Move obstacles + collision
-    const px = player.x;
-    const py = player.y - curH;
     for (let i = obstacles.length - 1; i >= 0; i--) {
       const o = obstacles[i];
       o.x -= speed * dt;
@@ -229,14 +211,7 @@
         obstacles.splice(i, 1);
         continue;
       }
-      // AABB collision with a little forgiveness margin.
-      const m = 6;
-      if (
-        px + player.w - m > o.x &&
-        px + m < o.x + o.w &&
-        py + m < o.y + o.h &&
-        py + curH - m > o.y
-      ) {
+      if (E.hits(player, o)) {
         gameOver();
       }
     }

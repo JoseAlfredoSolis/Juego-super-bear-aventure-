@@ -29,4 +29,17 @@ python3 -m http.server 8000
 
 - `index.html` — estructura y menús del juego.
 - `style.css` — estilos del lienzo, HUD y pantallas.
-- `game.js` — lógica del juego (física, obstáculos, colisiones, render).
+- `engine.js` — lógica pura del juego (física, colisiones, dificultad), reutilizable y testeable.
+- `game.js` — capa del navegador (entrada, render en canvas, bucle de juego).
+- `test/engine.test.js` — tests automatizados de la lógica del juego.
+
+## Tests
+
+La lógica pura del juego vive en `engine.js` y se prueba con el runner integrado de
+Node (sin dependencias externas):
+
+```bash
+npm test
+# o directamente:
+node --test
+```
