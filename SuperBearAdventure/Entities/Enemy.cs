@@ -20,8 +20,7 @@ namespace SuperBearAdventure.Entities
         protected bool    _movingRight  = true;
         protected float   _chaseRange   = 260f;
 
-        private   Color   _color;
-        private   float   _deathFlash   = 0f;
+        private Color   _color;
 
         // Appearance depends on theme world colour, set at construction
         public Enemy(Vector2 position, EnemyType type, float patrolRange, Color bodyColor)

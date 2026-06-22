@@ -111,11 +111,9 @@ namespace SuperBearAdventure.Scenes
         private static void DrawText(SpriteBatch sb, SpriteFont font, string text,
             int cx, int y, Color color, float scale = 1f)
         {
-            var sz     = font.MeasureString(text) * scale;
-            var origin = new Vector2(font.MeasureString(text).X / 2f, 0);
             sb.DrawString(font, text,
                 new Vector2(cx, y), color, 0f,
-                new Vector2(font.MeasureString(text).X / 2f, 0),
+                new Vector2(font.MeasureString(text).X / 2f, 0f),
                 scale, SpriteEffects.None, 0f);
         }
 

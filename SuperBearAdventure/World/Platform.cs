@@ -22,9 +22,7 @@ namespace SuperBearAdventure.World
             DrawHelper.DrawRect(sb, Bounds, Color);
             // Slightly lighter top edge for a fake-depth look
             DrawHelper.DrawRect(sb, new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, 4),
-                new Color(Color.R + 40 > 255 ? 255 : Color.R + 40,
-                           Color.G + 40 > 255 ? 255 : Color.G + 40,
-                           Color.B + 40 > 255 ? 255 : Color.B + 40));
+                DrawHelper.Brighten(Color, 40));
         }
     }
 }

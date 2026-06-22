@@ -34,6 +34,14 @@ namespace SuperBearAdventure
         public static void DrawRect(SpriteBatch sb, int x, int y, int w, int h, Color color)
             => DrawRect(sb, new Rectangle(x, y, w, h), color);
 
+        /// <summary>Returns a brightened version of a color by adding the given amount to each channel.</summary>
+        public static Color Brighten(Color c, int amount) =>
+            new Color(
+                Math.Min(c.R + amount, 255),
+                Math.Min(c.G + amount, 255),
+                Math.Min(c.B + amount, 255),
+                c.A);
+
         public static void DrawOutline(SpriteBatch sb, Rectangle rect, Color color, int thickness = 2)
         {
             DrawRect(sb, new Rectangle(rect.X,                        rect.Y,                        rect.Width, thickness), color);

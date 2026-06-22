@@ -229,10 +229,7 @@ namespace SuperBearAdventure.Scenes
                 if (sr.Right < 0 || sr.X > _screenW) continue; // cull off-screen
                 DrawHelper.DrawRect(sb, sr, p.Color);
                 // Lighter top edge
-                DrawHelper.DrawRect(sb, sr.X, sr.Y, sr.Width, 4,
-                    new Color(Math.Min(p.Color.R + 50, 255),
-                              Math.Min(p.Color.G + 50, 255),
-                              Math.Min(p.Color.B + 50, 255)));
+                DrawHelper.DrawRect(sb, sr.X, sr.Y, sr.Width, 4, DrawHelper.Brighten(p.Color, 50));
             }
 
             // Goal flag
