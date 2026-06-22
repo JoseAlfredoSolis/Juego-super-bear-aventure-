@@ -1,0 +1,15 @@
+# Build output
+bin/
+obj/
+
+# MonoGame content pipeline output
+Content/bin/
+Content/obj/
+
+# User-specific files
+*.user
+*.suo
+.vs/
+
+# NuGet
+*.nupkg
