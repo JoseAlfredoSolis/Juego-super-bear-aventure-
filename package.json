@@ -1,0 +1,10 @@
+{
+  "name": "super-bear-adventure",
+  "version": "1.0.0",
+  "description": "Juego de correr sin fin (endless runner) con HTML5 Canvas y JavaScript puro.",
+  "private": true,
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT"
+}
