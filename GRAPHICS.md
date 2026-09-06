@@ -1,7 +1,29 @@
 # Super Bear Adventure — versión HTML5
 
-`index.html` es el juego completo: **un solo archivo sin dependencias**, se abre
-con doble clic en cualquier navegador. No necesita servidor ni conexión.
+Juego completo en HTML5, **sin dependencias externas**: ni librerías, ni CDN, ni
+servidor, ni conexión. Se abre con doble clic en cualquier navegador.
+
+## Cómo jugarlo
+
+Descarga el repositorio entero (botón verde **Code → Download ZIP**), descomprime
+y haz doble clic en `index.html`. Los archivos `.js` tienen que estar junto al
+`index.html`, en la carpeta `js/`.
+
+## Estructura
+
+| Archivo | Contenido |
+|---|---|
+| `index.html` | Envoltorio HTML, estilos y las etiquetas `<script>` |
+| `js/core.js` | Constantes, entrada, utilidades, datos de nivel, estado y cámara |
+| `js/draw.js` | Primitivas de dibujo, partículas, clima, fondos y plataformas |
+| `js/entities.js` | Física, roster jugable, enemigos, objetos y bandera de meta |
+| `js/game.js` | Bucle de juego, progresión, renderizador 3D y HUD |
+| `js/screens.js` | Todos los menús y pantallas completas |
+| `js/main.js` | Arranque del canvas y bucle `requestAnimationFrame` |
+
+Se cargan como scripts clásicos en ese orden y comparten ámbito global, así que
+no hay sistema de módulos ni `import`: por eso funciona directamente desde
+`file://` sin servidor.
 
 ## Contenido
 
