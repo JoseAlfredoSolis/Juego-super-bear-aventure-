@@ -22,7 +22,7 @@ canvas {
 <body>
 <canvas id="c"></canvas>
 <script>
-// ── Constants ───────────────────────────────────────────────────
+// --- Constants ---
 const W = 1280, H = 720;
 const GRAVITY = 1800, MAX_FALL = 900;
 const PLAYER_W = 36, PLAYER_H = 48;
@@ -33,7 +33,7 @@ const COIN_PTS = 50, STAR_PTS = 200, ENEMY_PTS = 100, BOSS_PTS = 1000, LEVEL_PTS
 const FONT_UI    = "'Trebuchet MS', 'Segoe UI', system-ui, sans-serif";
 const FONT_TITLE = "'Arial Black', 'Trebuchet MS', 'Segoe UI', sans-serif";
 
-// ── Input ──────────────────────────────────────────────────────
+// --- Input ---
 const keys = {}, keyDown = {}, keyUp = {};
 document.addEventListener('keydown', e => { if (!keys[e.code]) keyDown[e.code] = true; keys[e.code] = true; e.preventDefault(); });
 document.addEventListener('keyup',   e => { keys[e.code] = false; keyUp[e.code] = true; });
@@ -41,16 +41,16 @@ function clearFrame() { for (const k in keyDown) delete keyDown[k]; for (const k
 function pressed(c) { return !!keyDown[c]; }
 function held(c)    { return !!keys[c]; }
 
-// ── Utilities ────────────────────────────────────────────────
+// --- Utilities ---
 function lerp(a, b, t) { return a + (b - a) * t; }
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 function rectOverlap(ax,ay,aw,ah, bx,by,bw,bh) {
   return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
 }
-// Deterministic pseudo-random in [0,1) — used so scenery never flickers.
+// Deterministic pseudo-random in [0,1) - used so scenery never flickers.
 function hash(n) { const s = Math.sin(n * 127.1) * 43758.5453; return s - Math.floor(s); }
 
-// ── Level Data ───────────────────────────────────────────────
+// --- Level Data ---
 // P(x,y,w,h), E(x,y,type:'patrol'|'chaser'|'boss',range), C(x,y,type:'coin'|'star'), U(x,y,type:'djump'|'speed'|'inv'), G(x,y)
 function mkLevel(world, lvl) {
   const W1=[
@@ -219,7 +219,7 @@ function mkLevel(world, lvl) {
   return [W1,W2,W3][world][lvl];
 }
 
-// ── Game State ───────────────────────────────────────────────
+// --- Game State ---
 const gs = {
   scene: 'menu', // menu | worldmap | gameplay | pause | gameover
   score: 0, highScore: 0, coins: 0, lives: 3,
@@ -228,7 +228,7 @@ const gs = {
   levelDone: [[false,false,false],[false,false,false],[false,false,false]],
 };
 
-// ── Camera + screen shake ────────────────────────────────────────
+// --- Camera + screen shake ---
 const cam = { x:0, y:0 };
 const shake = { t:0, dur:1, mag:0 };
 function addShake(mag, dur) { shake.mag = Math.max(shake.mag, mag); shake.t = Math.max(shake.t, dur); shake.dur = Math.max(shake.dur, dur); }
@@ -240,7 +240,7 @@ function camUpdate(px, py, levelW, snap=false) {
   else { cam.x = lerp(cam.x, tx, 0.18); cam.y = lerp(cam.y, ty, 0.18); }
 }
 
-// ── Drawing Helpers ────────────────────────────────────────────
+// --- Drawing Helpers ---
 let ctx, curDt = 0.016;
 
 function rect(x,y,w,h,c) { ctx.fillStyle=c; ctx.fillRect(x-cam.x,y-cam.y,w,h); }
@@ -262,7 +262,7 @@ function vgrad(x0,y0,x1,y1,stops) {
   for (const [p,c] of stops) g.addColorStop(p,c);
   return g;
 }
-/** Text with a rounded outline — the standard readable-on-anything game label. */
+/** Text with a rounded outline - the standard readable-on-anything game label. */
 function textOut(str,x,y,fill,size,align='left',outline='rgba(0,0,0,.75)',lw=5,font=FONT_UI) {
   ctx.font=`bold ${size}px ${font}`; ctx.textAlign=align; ctx.textBaseline='alphabetic';
   ctx.lineJoin='round'; ctx.miterLimit=2;
@@ -292,7 +292,7 @@ function drawVignette(strength=0.38) {
   g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,`rgba(0,0,0,${strength})`);
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 }
-/** Repeats drawFn across the screen at a parallax factor — never seams, never ends. */
+/** Repeats drawFn across the screen at a parallax factor - never seams, never ends. */
 function parallaxRow(spacing, factor, drawFn) {
   const off = cam.x * factor;
   const first = Math.floor(off/spacing) - 1;
@@ -300,7 +300,7 @@ function parallaxRow(spacing, factor, drawFn) {
   for (let i = first; i <= last; i++) drawFn(i*spacing - off, i);
 }
 
-// ── Particles & floating score text ─────────────────────────────────
+// --- Particles & floating score text ---
 let particles = [], floaters = [];
 const MAX_PARTICLES = 340;
 
@@ -375,7 +375,7 @@ function drawFloaters() {
   }
 }
 
-// ── Ambient weather (screen-space, per world) ───────────────────────────
+// --- Ambient weather (screen-space, per world) ---
 const flakes = [];
 for (let i=0;i<150;i++) flakes.push({ x:Math.random()*W, y:Math.random()*H, r:0.8+Math.random()*2.4, sp:18+Math.random()*46, sw:Math.random()*Math.PI*2, amp:8+Math.random()*22 });
 const motes = [];
@@ -422,7 +422,7 @@ function drawWeather(world, t, dt) {
   }
 }
 
-// ── Backgrounds ──────────────────────────────────────────────
+// --- Backgrounds ---
 function drawSky(stops) {
   ctx.fillStyle = vgrad(0,0,0,H, stops); ctx.fillRect(0,0,W,H);
 }
@@ -497,7 +497,7 @@ function drawForestBg(t, dt) {
     const h = 118 + hash(i*1.9)*66;
     drawPine(x, H*0.735, h, 0.62, '#2f6b34', false);
   });
-  // near tree line — kept low and semi-transparent so it frames the playfield
+  // near tree line - kept low and semi-transparent so it frames the playfield
   ctx.globalAlpha = 0.6;
   parallaxRow(248, 0.58, (x,i) => {
     const h = 150 + hash(i*2.7+4)*76;
@@ -603,7 +603,7 @@ function drawSnowBg(t, dt) {
     ctx.closePath(); ctx.fill();
   }
   drawRidge(H*0.80, 90, 250, 0.26, '#8fb4d4', 5.5);
-  // snowy pines — kept below the play band so platforms stay readable
+  // snowy pines - kept below the play band so platforms stay readable
   parallaxRow(148, 0.42, (x,i) => drawPine(x, H*0.775, 108+hash(i*1.9)*58, 0.62, '#2b5545', true));
   ctx.globalAlpha = 0.6;
   parallaxRow(266, 0.64, (x,i) => drawPine(x, H*0.925, 146+hash(i*3.1+3)*74, 0.66, '#1e3f36', true));
@@ -632,7 +632,7 @@ function hazeScrim(world) {
   ctx.fillStyle = c; ctx.fillRect(0,0,W,H);
 }
 
-// ── Platforms ────────────────────────────────────────────────
+// --- Platforms ---
 function drawPlatform(p, world, t) {
   const [px,py,pw,ph] = p;
   const x = px-cam.x, y = py-cam.y;
@@ -740,7 +740,7 @@ function drawPlatform(p, world, t) {
 }
 function drawPlatforms(plats, world, t) { for (const p of plats) drawPlatform(p, world, t); }
 
-// ── Physics ──────────────────────────────────────────────────
+// --- Physics ---
 function resolveX(e, plats) {
   for (const p of plats) {
     if (!rectOverlap(e.x,e.y,e.w,e.h, p[0],p[1],p[2],p[3])) continue;
@@ -764,7 +764,7 @@ function resolveY(e, plats) {
     }
   }
 }
-/** Nearest platform surface below a box — used for drop shadows. */
+/** Nearest platform surface below a box - used for drop shadows. */
 function groundYBelow(x, w, y, plats) {
   let best = Infinity;
   for (const p of plats) {
@@ -773,7 +773,7 @@ function groundYBelow(x, w, y, plats) {
   return best;
 }
 
-// ── Player ───────────────────────────────────────────────────
+// --- Player ---
 function mkPlayer() {
   return { x:80, y:570, vx:0, vy:0, w:PLAYER_W, h:PLAYER_H,
     onGround:false, canDjump:false, djumpUsed:false,
@@ -921,7 +921,7 @@ function drawBear(scale, animT, facing, vy, power, blink, t) {
       ell(ex+1.9, hy-4.9, 0.8, 0.9, '#ffffff');
     }
   }
-  // brow line — gives the bear a bit of attitude
+  // brow line - gives the bear a bit of attitude
   ctx.strokeStyle = FUR_DARK; ctx.lineWidth = 1.6;
   ctx.beginPath(); ctx.moveTo(-5, hy-8.6); ctx.lineTo(1.5, hy-9.6); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(6, hy-9.6); ctx.lineTo(12.5, hy-8.6); ctx.stroke();
@@ -971,7 +971,7 @@ function drawPlayer(p, t, plats) {
   ctx.restore();
 }
 
-// ── Enemy ─────────────────────────────────────────────────────
+// --- Enemy ---
 function mkEnemies(data) {
   return data.map(([ex,ey,type,range]) => ({
     x:ex, y:ey, vx:0, vy:0, w:type==='boss'?58:34, h:type==='boss'?66:38,
@@ -1181,7 +1181,7 @@ function drawEnemy(e, t, plats, px, py) {
   }
 }
 
-// ── Collectibles & Power-ups ──────────────────────────────────────
+// --- Collectibles & Power-ups ---
 function mkCollectibles(coins, stars, powerups) {
   const items = [];
   for (const [cx,cy] of coins)   items.push({x:cx,y:cy,w:20,h:20,type:'coin',taken:false,bob:Math.random()*Math.PI*2});
@@ -1257,7 +1257,7 @@ function drawCollectible(it, t) {
   }
 }
 
-// ── Goal Flag ────────────────────────────────────────────────
+// --- Goal Flag ---
 function drawGoal(gx, gy, t) {
   const x = gx-cam.x, y = gy-cam.y;
   if (x < -140 || x > W+140) return;
@@ -1310,7 +1310,7 @@ function drawGoal(gx, gy, t) {
   textOut('GOAL', x+20, y+40, '#d6ffe2', 15, 'center', 'rgba(0,60,20,.85)', 5);
 }
 
-// ── Gameplay Scene State ───────────────────────────────────────
+// --- Gameplay Scene State ---
 let player, enemies, items, goalPos, levelData, gameTimer;
 let hitFlash = 0;   // white/red full-screen flash on damage
 
@@ -1478,7 +1478,7 @@ function drawGameplay(t, dt) {
   drawHUD(t);
 }
 
-// ── HUD ──────────────────────────────────────────────────────
+// --- HUD ---
 function drawHeart(cx, cy, s, filled, t) {
   const pulse = filled ? 1 + Math.sin(t*4)*0.05 : 1;
   ctx.save(); ctx.translate(cx, cy); ctx.scale(s*pulse, s*pulse);
@@ -1564,7 +1564,7 @@ function drawHUD(t) {
   }
 }
 
-// ── Shared menu chrome ───────────────────────────────────────────
+// --- Shared menu chrome ---
 function menuButton(cx, cy, w, h, label, selected, t, accent='#ffd44e', fill=['rgba(60,120,50,.95)','rgba(26,70,26,.95)'], glow='rgba(255,205,80,.22)') {
   const s = selected ? 1 + Math.sin(t*6)*0.018 : 1;
   ctx.save(); ctx.translate(cx, cy); ctx.scale(s, s); ctx.translate(-cx, -cy);
@@ -1614,7 +1614,7 @@ function hintBar(str) {
   textOut(str, W/2, H-15, 'rgba(228,240,255,.85)', 15, 'center', 'rgba(0,0,0,.8)', 4);
 }
 
-// ── Menu Scene ───────────────────────────────────────────────
+// --- Menu Scene ---
 let menuSel=0, menuT=0;
 const menuItems=['PLAY','INSTRUCTIONS','QUIT'];
 
@@ -1667,7 +1667,7 @@ function drawMenu(t, dt) {
   hintBar('↑ ↓  Navegar     ENTER / SPACE  Seleccionar     ESC  Volver');
 }
 
-// ── Instructions ─────────────────────────────────────────────
+// --- Instructions ---
 function drawInstructions(t, dt) {
   const ox = cam.x; cam.x = t*10;
   drawForestBg(t, dt);
@@ -1747,7 +1747,7 @@ function drawInstructions(t, dt) {
   if (pressed('Enter')||pressed('Escape')) gs.scene='menu';
 }
 
-// ── World Map ───────────────────────────────────────────────
+// --- World Map ---
 let wmSel=0, wmLvl=0;
 const worldNames=['FOREST','CAVE','SNOW'];
 const worldSubs=['Bosque soleado','Cuevas de cristal','Cumbres heladas'];
@@ -1888,7 +1888,7 @@ function drawWorldMap(t, dt) {
   drawVignette(0.34);
 }
 
-// ── Pause Scene ──────────────────────────────────────────────
+// --- Pause Scene ---
 let pauseSel=0;
 const pauseItems=['RESUME','RESTART LEVEL','MAIN MENU'];
 
@@ -1922,7 +1922,7 @@ function drawPause(t, dt) {
   textOut('ESC para continuar', W/2, by+bh-18, 'rgba(190,210,230,.7)', 13, 'center', 'rgba(0,0,0,.8)', 4);
 }
 
-// ── Game Over ───────────────────────────────────────────────
+// --- Game Over ---
 let goSel=0, goT=0;
 
 function updateGameOver(dt) {
@@ -1987,7 +1987,7 @@ function drawGameOver(t) {
   hintBar('← →  Seleccionar     ENTER  Confirmar');
 }
 
-// ── Main Loop ────────────────────────────────────────────────
+// --- Main Loop ---
 const canvas = document.getElementById('c');
 canvas.width = W; canvas.height = H;
 ctx = canvas.getContext('2d');
