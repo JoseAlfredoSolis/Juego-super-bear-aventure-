@@ -6,21 +6,15 @@ obstáculos. ¡Cuanto más lejos llegues, más rápido se vuelve!
 
 ## Jugar en la web
 
-El juego se publica automáticamente en **GitHub Pages** mediante GitHub Actions
-(`.github/workflows/deploy.yml`) cada vez que se actualiza la rama `main`.
+El juego **ya está publicado** en GitHub Pages:
 
-URL del juego una vez activado:
+**▶ https://josealfredosolis.github.io/Juego-super-bear-aventure-/runner/**
 
-```
-https://josealfredosolis.github.io/juego-super-bear-aventure-/
-```
-
-### Activar GitHub Pages (una sola vez)
-
-1. En GitHub, ve a **Settings → Pages**.
-2. En **Build and deployment → Source**, elige **GitHub Actions**.
-3. Fusiona este PR (o haz push a `main`). El workflow desplegará el juego y la
-   URL aparecerá en la pestaña **Actions** y en **Settings → Pages**.
+Se publica en el subdirectorio `/runner/` de la rama `gh-pages` para convivir con
+el sitio ya existente en la raíz, sin sobrescribirlo. El workflow
+`.github/workflows/deploy.yml` vuelve a publicar automáticamente ese subdirectorio
+cada vez que se actualiza la rama `main` (usando `keep_files`, así el resto de la
+rama `gh-pages` queda intacto). No hace falta cambiar ningún ajuste del repositorio.
 
 ## Alternativa: desplegar en Netlify
 

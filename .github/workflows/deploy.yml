@@ -1,39 +1,37 @@
-name: Deploy to GitHub Pages
+name: Deploy game to GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
+# The repository's Pages site is served from the `gh-pages` branch (legacy
+# source), which already hosts another site at its root. To avoid clobbering
+# it, this workflow publishes the runner game into the `runner/` subfolder and
+# keeps every other file on the branch untouched.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
-# Allow one concurrent deployment, cancel in-progress runs.
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+      - name: Assemble static site
+        run: |
+          mkdir -p site
+          cp index.html style.css engine.js game.js site/
 
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish to gh-pages/runner
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          # The game is fully static, served from the repo root.
-          path: "."
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          destination_dir: runner
+          keep_files: true
