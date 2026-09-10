@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Super Bear Adventure - Correr</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="game-wrapper">
+    <canvas id="game" width="800" height="400"></canvas>
+
+    <div id="hud">
+      <span id="score">0 m</span>
+      <span id="best">Récord: 0 m</span>
+    </div>
+
+    <div id="overlay" class="overlay">
+      <div class="panel">
+        <h1>🐻 Super Bear Adventure</h1>
+        <p class="subtitle">¡Corre, salta y esquiva los obstáculos!</p>
+        <ul class="controls">
+          <li><kbd>Espacio</kbd> / <kbd>↑</kbd> / Clic — Saltar</li>
+          <li><kbd>↓</kbd> / Mantener — Agacharse</li>
+          <li>Doble salto disponible</li>
+        </ul>
+        <button id="start-btn">Empezar a correr</button>
+      </div>
+    </div>
+
+    <div id="gameover" class="overlay hidden">
+      <div class="panel">
+        <h1>¡Game Over!</h1>
+        <p class="subtitle">Distancia: <span id="final-score">0</span> m</p>
+        <p class="subtitle" id="new-record" style="display:none">🏆 ¡Nuevo récord!</p>
+        <button id="restart-btn">Volver a correr</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="engine.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
