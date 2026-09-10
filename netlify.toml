@@ -1,0 +1,28 @@
+# Configuración de Netlify para Super Bear Adventure.
+# El juego es 100% estático (HTML + CSS + JS), así que solo se publican
+# los archivos del repositorio. Los tests se ejecutan como "gate" del build.
+
+[build]
+  publish = "."
+  command = "npm test"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Cabeceras de seguridad y de caché razonables para un sitio estático.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

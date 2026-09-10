@@ -22,6 +22,19 @@ https://josealfredosolis.github.io/juego-super-bear-aventure-/
 3. Fusiona este PR (o haz push a `main`). El workflow desplegará el juego y la
    URL aparecerá en la pestaña **Actions** y en **Settings → Pages**.
 
+## Alternativa: desplegar en Netlify
+
+El repositorio incluye `netlify.toml` listo para usar (publica los archivos
+estáticos y ejecuta los tests como *gate* del build). Netlify añade además
+**previews automáticas por cada Pull Request**.
+
+Para activarlo (una sola vez):
+
+1. Crea una cuenta en [Netlify](https://www.netlify.com/) e inicia sesión.
+2. **Add new site → Import an existing project → GitHub** y selecciona este repositorio.
+3. Netlify detecta `netlify.toml` automáticamente (no hace falta configurar nada más).
+4. Pulsa **Deploy**. Obtendrás una URL pública y una preview por cada PR.
+
 ## Jugar en local
 
 Abre `index.html` en tu navegador, o sirve la carpeta con un servidor estático:
